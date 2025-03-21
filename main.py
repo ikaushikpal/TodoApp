@@ -65,9 +65,35 @@ def custom_openapi():
         return app.openapi_schema
 
     openapi_schema = get_openapi(
-        title="Your API",
-        version="1.0.0",
-        description="API with custom JWT token authorization",
+        title="TodoApp API",  # Title of your API
+        version="1.0.0",  # Version of your API
+        description="""
+        TodoApp API Documentation
+
+        This is the official API documentation for the **TodoApp**, a FastAPI-based application for managing todos and users.
+
+        Features:
+        - User Authentication: Register, login, and manage user profiles.
+        - Todo Management: Create, read, update, and delete todos.
+        - Full-Text Search: Search for users and todos using advanced search queries.
+        - Redis Caching: Improve performance with Redis-based caching.
+
+        Authentication:
+        - Use the **Login** endpoint to obtain a JWT token.
+        - Include the token in the `Authorization` header for protected endpoints.
+
+        Example:
+        ```bash
+        curl -X 'GET' 'http://localhost:8000/api/v1/todos' \\
+          -H 'accept: application/json' \\
+          -H 'Authorization: Bearer <your-jwt-token>'
+        ```
+
+        Links:
+        - [GitHub Repository](https://github.com/ikaushikpal/TodoApp)
+        - [Swagger UI](http://localhost:8000/docs)
+        - [ReDoc](http://localhost:8000/redoc)
+        """,
         routes=app.routes,
     )
 
