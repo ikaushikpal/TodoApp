@@ -90,6 +90,11 @@ Have configured logs using python logger. So if don't want to UNICORN info logs,
 uvicorn main:app --host 0.0.0.0 --port 8000 --log-level error --reload
 ```
 
+for production deployment use bellow command
+```bash
+gunicorn -w 4 -k uvicorn.workers.UvicornWorker --keep-alive 5 main:app
+```
+
 ## 8. Access API Docs
 - Swagger UI: http://127.0.0.1:8000/docs
 - ReDoc: http://127.0.0.1:8000/redoc
