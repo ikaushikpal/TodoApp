@@ -35,22 +35,7 @@ async def get_user(
 ):
     """Fetch a specific user, with caching."""
     logger.info(f"User '{curr_user.email}' is fetching user '{user_id}'.")
-    redis_client = get_redis_cache()
-    cache_key = f"user:{user_id}"
-
-    cached_data = await redis_client.get(cache_key)
-    if cached_data:
-        logger.debug(f"Cache hit for user '{user_id}'.")
-        return serializer.loads(cached_data)
-
-    logger.debug(f"Cache miss for user '{user_id}', fetching from database.")
-    user = await user_service.get_user(curr_user, user_id)
-
-    serialized_user = serializer.dumps(user.model_dump())
-    await redis_client.set(cache_key, serialized_user, ex=60)  # Cache for 60 seconds
-    logger.debug(f"User '{user_id}' cached successfully.")
-
-    return user
+    return await user_service.get_user(curr_user, user_id)
 
 
 @router.get("/search", response_model=Page[UserResponse])
@@ -77,15 +62,7 @@ async def update_user(
 ):
     """Update user details."""
     logger.info(f"User '{curr_user.email}' is updating user '{user_id}'.")
-    updated_user = await user_service.update_user(curr_user, user_id, update_user)
-
-    redis_client = get_redis_cache()
-    cache_key = f"user:{user_id}"
-    await redis_client.delete(cache_key)  # Invalidate cache
-    logger.debug(f"Cache for user '{user_id}' invalidated after update.")
-
-    return updated_user
-
+    return await user_service.update_user(curr_user, user_id, update_user)
 
 @router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_user(
@@ -97,12 +74,6 @@ async def delete_user(
     logger.warning(f"User '{curr_user.email}' is deleting user '{user_id}'.")
     await user_service.delete_user(curr_user, user_id)
 
-    redis_client = get_redis_cache()
-    cache_key = f"user:{user_id}"
-    await redis_client.delete(cache_key)  # Invalidate cache
-    logger.debug(f"Cache for user '{user_id}' invalidated after deletion.")
-
-
 @router.patch("/{user_id}/password", response_model=UserResponse)
 async def update_password(
     user_service: user_service_dependency,
@@ -112,14 +83,7 @@ async def update_password(
 ):
     """Update a user's password."""
     logger.info(f"User '{curr_user.email}' is updating password for user '{user_id}'.")
-    updated_user = await user_service.update_password(curr_user, user_id, new_password)
-
-    redis_client = get_redis_cache()
-    cache_key = f"user:{user_id}"
-    await redis_client.delete(cache_key)  # Invalidate cache
-    logger.debug(f"Cache for user '{user_id}' invalidated after password update.")
-
-    return updated_user
+    return await user_service.update_password(curr_user, user_id, new_password)
 
 
 @router.patch("/{user_id}/role", response_model=UserResponse)
@@ -131,11 +95,4 @@ async def change_user_role(
 ):
     """Change a user's role."""
     logger.info(f"User '{curr_user.email}' is changing role for user '{user_id}'.")
-    updated_user = await user_service.change_user_role(curr_user, user_id, new_role)
-
-    redis_client = get_redis_cache()
-    cache_key = f"user:{user_id}"
-    await redis_client.delete(cache_key)  # Invalidate cache
-    logger.debug(f"Cache for user '{user_id}' invalidated after role update.")
-
-    return updated_user
+    return await user_service.change_user_role(curr_user, user_id, new_role)
