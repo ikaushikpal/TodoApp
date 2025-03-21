@@ -1,0 +1,665 @@
+{
+    "info": {
+      "_postman_id": "c1f1e1a1-1234-5678-9101-123456789012",
+      "name": "TodoAPP API Collection",
+      "description": "A collection of API endpoints for authentication, users, and todos.",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "Auth",
+        "item": [
+          {
+            "name": "Get Current User",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Authorization",
+                  "value": "Bearer <token>",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{base_url}}/api/v1/auth",
+                "host": ["{{base_url}}"],
+                "path": ["api", "v1", "auth"]
+              },
+              "description": "Fetch the currently authenticated user."
+            },
+            "response": [
+              {
+                "name": "Successful Response",
+                "code": 200,
+                "body": "{\n  \"id\": \"550e8400-e29b-41d4-a716-446655440000\",\n  \"username\": \"john_doe123\",\n  \"first_name\": \"John\",\n  \"last_name\": \"Doe\",\n  \"country_code\": \"+91\",\n  \"phone_number\": \"9876543210\",\n  \"role\": \"USER\",\n  \"is_active\": true,\n  \"created_at\": \"2025-03-16T10:00:00Z\"\n}"
+              }
+            ]
+          },
+          {
+            "name": "Login",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"email\": \"johndoe@example.com\",\n  \"password\": \"StrongP@ss1\"\n}"
+              },
+              "url": {
+                "raw": "{{base_url}}/api/v1/auth/login",
+                "host": ["{{base_url}}"],
+                "path": ["api", "v1", "auth", "login"]
+              },
+              "description": "Authenticate user and generate access token."
+            },
+            "response": [
+              {
+                "name": "Successful Response",
+                "code": 200,
+                "body": "{}"
+              },
+              {
+                "name": "Validation Error",
+                "code": 422,
+                "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        0\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}"
+              }
+            ]
+          },
+          {
+            "name": "Register User",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"username\": \"john_doe123\",\n  \"email\": \"johndoe@example.com\",\n  \"first_name\": \"John\",\n  \"last_name\": \"Doe\",\n  \"country_code\": \"+91\",\n  \"phone_number\": \"9876543210\",\n  \"password\": \"StrongP@ss1\"\n}"
+              },
+              "url": {
+                "raw": "{{base_url}}/api/v1/auth/register",
+                "host": ["{{base_url}}"],
+                "path": ["api", "v1", "auth", "register"]
+              },
+              "description": "Register a new user."
+            },
+            "response": [
+              {
+                "name": "Successful Response",
+                "code": 201,
+                "body": "{\n  \"id\": \"550e8400-e29b-41d4-a716-446655440000\",\n  \"username\": \"john_doe123\",\n  \"first_name\": \"John\",\n  \"last_name\": \"Doe\",\n  \"country_code\": \"+91\",\n  \"phone_number\": \"9876543210\",\n  \"role\": \"USER\",\n  \"is_active\": true,\n  \"created_at\": \"2025-03-16T10:00:00Z\"\n}"
+              },
+              {
+                "name": "Validation Error",
+                "code": 422,
+                "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        0\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Users",
+        "item": [
+          {
+            "name": "Get All Users",
+            "request": {
+              "method": "GET",
+              "url": {
+                "raw": "{{base_url}}/api/v1/users?limit=10&offset=0",
+                "host": ["{{base_url}}"],
+                "path": ["api", "v1", "users"],
+                "query": [
+                  {
+                    "key": "limit",
+                    "value": "10"
+                  },
+                  {
+                    "key": "offset",
+                    "value": "0"
+                  }
+                ]
+              },
+              "description": "Fetch all users with pagination."
+            },
+            "response": [
+              {
+                "name": "Successful Response",
+                "code": 200,
+                "body": "{\n  \"items\": [\n    {\n      \"id\": \"550e8400-e29b-41d4-a716-446655440000\",\n      \"username\": \"john_doe123\",\n      \"first_name\": \"John\",\n      \"last_name\": \"Doe\",\n      \"country_code\": \"+91\",\n      \"phone_number\": \"9876543210\",\n      \"role\": \"USER\",\n      \"is_active\": true,\n      \"created_at\": \"2025-03-16T10:00:00Z\"\n    }\n  ],\n  \"page_number\": 0,\n  \"page_size\": 0,\n  \"total_items\": 0,\n  \"total_pages\": 0,\n  \"has_next\": true,\n  \"has_previous\": true\n}"
+              },
+              {
+                "name": "Validation Error",
+                "code": 422,
+                "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        0\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}"
+              }
+            ]
+          },
+          {
+            "name": "Get User",
+            "request": {
+              "method": "GET",
+              "url": {
+                "raw": "{{base_url}}/api/v1/users/550e8400-e29b-41d4-a716-446655440000",
+                "host": ["{{base_url}}"],
+                "path": ["api", "v1", "users", "550e8400-e29b-41d4-a716-446655440000"]
+              },
+              "description": "Fetch a specific user, with caching."
+            },
+            "response": [
+              {
+                "name": "Successful Response",
+                "code": 200,
+                "body": "{\n  \"id\": \"550e8400-e29b-41d4-a716-446655440000\",\n  \"username\": \"john_doe123\",\n  \"first_name\": \"John\",\n  \"last_name\": \"Doe\",\n  \"country_code\": \"+91\",\n  \"phone_number\": \"9876543210\",\n  \"role\": \"USER\",\n  \"is_active\": true,\n  \"created_at\": \"2025-03-16T10:00:00Z\"\n}"
+              },
+              {
+                "name": "Validation Error",
+                "code": 422,
+                "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        0\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}"
+              }
+            ]
+          },
+          {
+            "name": "Update User",
+            "request": {
+              "method": "PUT",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"username\": \"john_doe123\",\n  \"first_name\": \"John\",\n  \"last_name\": \"Doe\",\n  \"country_code\": \"+91\",\n  \"phone_number\": \"9876543210\"\n}"
+              },
+              "url": {
+                "raw": "{{base_url}}/api/v1/users/550e8400-e29b-41d4-a716-446655440000",
+                "host": ["{{base_url}}"],
+                "path": ["api", "v1", "users", "550e8400-e29b-41d4-a716-446655440000"]
+              },
+              "description": "Update user details."
+            },
+            "response": [
+              {
+                "name": "Successful Response",
+                "code": 200,
+                "body": "{\n  \"id\": \"550e8400-e29b-41d4-a716-446655440000\",\n  \"username\": \"john_doe123\",\n  \"first_name\": \"John\",\n  \"last_name\": \"Doe\",\n  \"country_code\": \"+91\",\n  \"phone_number\": \"9876543210\",\n  \"role\": \"USER\",\n  \"is_active\": true,\n  \"created_at\": \"2025-03-16T10:00:00Z\"\n}"
+              },
+              {
+                "name": "Validation Error",
+                "code": 422,
+                "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        0\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}"
+              }
+            ]
+          },
+          {
+            "name": "Delete User",
+            "request": {
+              "method": "DELETE",
+              "url": {
+                "raw": "{{base_url}}/api/v1/users/550e8400-e29b-41d4-a716-446655440000",
+                "host": ["{{base_url}}"],
+                "path": ["api", "v1", "users", "550e8400-e29b-41d4-a716-446655440000"]
+              },
+              "description": "Delete a user."
+            },
+            "response": [
+              {
+                "name": "Successful Response",
+                "code": 204
+              },
+              {
+                "name": "Validation Error",
+                "code": 422,
+                "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        0\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}"
+              }
+            ]
+          },
+          {
+            "name": "Search Users",
+            "request": {
+              "method": "GET",
+              "url": {
+                "raw": "{{base_url}}/api/v1/users/search?search_term=john&limit=10&offset=0",
+                "host": ["{{base_url}}"],
+                "path": ["api", "v1", "users", "search"],
+                "query": [
+                  {
+                    "key": "search_term",
+                    "value": "john"
+                  },
+                  {
+                    "key": "limit",
+                    "value": "10"
+                  },
+                  {
+                    "key": "offset",
+                    "value": "0"
+                  }
+                ]
+              },
+              "description": "Search for users based on a search term."
+            },
+            "response": [
+              {
+                "name": "Successful Response",
+                "code": 200,
+                "body": "{\n  \"items\": [\n    {\n      \"id\": \"550e8400-e29b-41d4-a716-446655440000\",\n      \"username\": \"john_doe123\",\n      \"first_name\": \"John\",\n      \"last_name\": \"Doe\",\n      \"country_code\": \"+91\",\n      \"phone_number\": \"9876543210\",\n      \"role\": \"USER\",\n      \"is_active\": true,\n      \"created_at\": \"2025-03-16T10:00:00Z\"\n    }\n  ],\n  \"page_number\": 0,\n  \"page_size\": 0,\n  \"total_items\": 0,\n  \"total_pages\": 0,\n  \"has_next\": true,\n  \"has_previous\": true\n}"
+              },
+              {
+                "name": "Validation Error",
+                "code": 422,
+                "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        0\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}"
+              }
+            ]
+          },
+          {
+            "name": "Update Password",
+            "request": {
+              "method": "PATCH",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"password\": \"StrongP@ss1\"\n}"
+              },
+              "url": {
+                "raw": "{{base_url}}/api/v1/users/550e8400-e29b-41d4-a716-446655440000/password",
+                "host": ["{{base_url}}"],
+                "path": ["api", "v1", "users", "550e8400-e29b-41d4-a716-446655440000", "password"]
+              },
+              "description": "Update a user's password."
+            },
+            "response": [
+              {
+                "name": "Successful Response",
+                "code": 200,
+                "body": "{\n  \"id\": \"550e8400-e29b-41d4-a716-446655440000\",\n  \"username\": \"john_doe123\",\n  \"first_name\": \"John\",\n  \"last_name\": \"Doe\",\n  \"country_code\": \"+91\",\n  \"phone_number\": \"9876543210\",\n  \"role\": \"USER\",\n  \"is_active\": true,\n  \"created_at\": \"2025-03-16T10:00:00Z\"\n}"
+              },
+              {
+                "name": "Validation Error",
+                "code": 422,
+                "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        0\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}"
+              }
+            ]
+          },
+          {
+            "name": "Change User Role",
+            "request": {
+              "method": "PATCH",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"role\": \"ADMIN\",\n  \"is_active\": true\n}"
+              },
+              "url": {
+                "raw": "{{base_url}}/api/v1/users/550e8400-e29b-41d4-a716-446655440000/role",
+                "host": ["{{base_url}}"],
+                "path": ["api", "v1", "users", "550e8400-e29b-41d4-a716-446655440000", "role"]
+              },
+              "description": "Change a user's role."
+            },
+            "response": [
+              {
+                "name": "Successful Response",
+                "code": 200,
+                "body": "{\n  \"id\": \"550e8400-e29b-41d4-a716-446655440000\",\n  \"username\": \"john_doe123\",\n  \"first_name\": \"John\",\n  \"last_name\": \"Doe\",\n  \"country_code\": \"+91\",\n  \"phone_number\": \"9876543210\",\n  \"role\": \"USER\",\n  \"is_active\": true,\n  \"created_at\": \"2025-03-16T10:00:00Z\"\n}"
+              },
+              {
+                "name": "Validation Error",
+                "code": 422,
+                "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        0\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Todos",
+        "item": [
+          {
+            "name": "Get All Todos",
+            "request": {
+              "method": "GET",
+              "url": {
+                "raw": "{{base_url}}/api/v1/todos?limit=10&offset=0",
+                "host": ["{{base_url}}"],
+                "path": ["api", "v1", "todos"],
+                "query": [
+                  {
+                    "key": "limit",
+                    "value": "10"
+                  },
+                  {
+                    "key": "offset",
+                    "value": "0"
+                  }
+                ]
+              },
+              "description": "Fetch all todos with pagination."
+            },
+            "response": [
+              {
+                "name": "Successful Response",
+                "code": 200,
+                "body": "{\n  \"items\": [\n    {\n      \"id\": 1,\n      \"title\": \"Buy groceries\",\n      \"description\": \"Milk, eggs, bread\",\n      \"priority\": 3,\n      \"complete\": false,\n      \"owner_id\": \"550e8400-e29b-41d4-a716-446655440000\",\n      \"created_at\": \"2025-03-16T10:00:00Z\",\n      \"finished_at\": \"2025-03-18T12:00:00Z\"\n    }\n  ],\n  \"page_number\": 0,\n  \"page_size\": 0,\n  \"total_items\": 0,\n  \"total_pages\": 0,\n  \"has_next\": true,\n  \"has_previous\": true\n}"
+              },
+              {
+                "name": "Validation Error",
+                "code": 422,
+                "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        0\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}"
+              }
+            ]
+          },
+          {
+            "name": "Add New Todo",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"title\": \"Buy groceries\",\n  \"description\": \"Milk, eggs, bread\",\n  \"priority\": 3\n}"
+              },
+              "url": {
+                "raw": "{{base_url}}/api/v1/todos",
+                "host": ["{{base_url}}"],
+                "path": ["api", "v1", "todos"]
+              },
+              "description": "Add a new todo."
+            },
+            "response": [
+              {
+                "name": "Successful Response",
+                "code": 201,
+                "body": "{\n  \"id\": 1,\n  \"title\": \"Buy groceries\",\n  \"description\": \"Milk, eggs, bread\",\n  \"priority\": 3,\n  \"complete\": false,\n  \"owner_id\": \"550e8400-e29b-41d4-a716-446655440000\",\n  \"created_at\": \"2025-03-16T10:00:00Z\",\n  \"finished_at\": \"2025-03-18T12:00:00Z\"\n}"
+              },
+              {
+                "name": "Validation Error",
+                "code": 422,
+                "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        0\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}"
+              }
+            ]
+          },
+          {
+            "name": "Get User Uncompleted Todos",
+            "request": {
+              "method": "GET",
+              "url": {
+                "raw": "{{base_url}}/api/v1/todos/user/550e8400-e29b-41d4-a716-446655440000/uncompleted?limit=10&offset=0",
+                "host": ["{{base_url}}"],
+                "path": ["api", "v1", "todos", "user", "550e8400-e29b-41d4-a716-446655440000", "uncompleted"],
+                "query": [
+                  {
+                    "key": "limit",
+                    "value": "10"
+                  },
+                  {
+                    "key": "offset",
+                    "value": "0"
+                  }
+                ]
+              },
+              "description": "Fetch uncompleted todos for a specific user."
+            },
+            "response": [
+              {
+                "name": "Successful Response",
+                "code": 200,
+                "body": "{\n  \"items\": [\n    {\n      \"id\": 1,\n      \"title\": \"Buy groceries\",\n      \"description\": \"Milk, eggs, bread\",\n      \"priority\": 3,\n      \"complete\": false,\n      \"owner_id\": \"550e8400-e29b-41d4-a716-446655440000\",\n      \"created_at\": \"2025-03-16T10:00:00Z\",\n      \"finished_at\": \"2025-03-18T12:00:00Z\"\n    }\n  ],\n  \"page_number\": 0,\n  \"page_size\": 0,\n  \"total_items\": 0,\n  \"total_pages\": 0,\n  \"has_next\": true,\n  \"has_previous\": true\n}"
+              },
+              {
+                "name": "Validation Error",
+                "code": 422,
+                "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        0\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}"
+              }
+            ]
+          },
+          {
+            "name": "Get User Completed Todos",
+            "request": {
+              "method": "GET",
+              "url": {
+                "raw": "{{base_url}}/api/v1/todos/user/550e8400-e29b-41d4-a716-446655440000/completed?limit=10&offset=0",
+                "host": ["{{base_url}}"],
+                "path": ["api", "v1", "todos", "user", "550e8400-e29b-41d4-a716-446655440000", "completed"],
+                "query": [
+                  {
+                    "key": "limit",
+                    "value": "10"
+                  },
+                  {
+                    "key": "offset",
+                    "value": "0"
+                  }
+                ]
+              },
+              "description": "Fetch completed todos for a specific user."
+            },
+            "response": [
+              {
+                "name": "Successful Response",
+                "code": 200,
+                "body": "{\n  \"items\": [\n    {\n      \"id\": 1,\n      \"title\": \"Buy groceries\",\n      \"description\": \"Milk, eggs, bread\",\n      \"priority\": 3,\n      \"complete\": false,\n      \"owner_id\": \"550e8400-e29b-41d4-a716-446655440000\",\n      \"created_at\": \"2025-03-16T10:00:00Z\",\n      \"finished_at\": \"2025-03-18T12:00:00Z\"\n    }\n  ],\n  \"page_number\": 0,\n  \"page_size\": 0,\n  \"total_items\": 0,\n  \"total_pages\": 0,\n  \"has_next\": true,\n  \"has_previous\": true\n}"
+              },
+              {
+                "name": "Validation Error",
+                "code": 422,
+                "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        0\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}"
+              }
+            ]
+          },
+          {
+            "name": "Delete User Completed Todos",
+            "request": {
+              "method": "DELETE",
+              "url": {
+                "raw": "{{base_url}}/api/v1/todos/user/550e8400-e29b-41d4-a716-446655440000/completed",
+                "host": ["{{base_url}}"],
+                "path": ["api", "v1", "todos", "user", "550e8400-e29b-41d4-a716-446655440000", "completed"]
+              },
+              "description": "Delete completed todos for a specific user."
+            },
+            "response": [
+              {
+                "name": "Successful Response",
+                "code": 204
+              },
+              {
+                "name": "Validation Error",
+                "code": 422,
+                "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        0\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}"
+              }
+            ]
+          },
+          {
+            "name": "Search Todos",
+            "request": {
+              "method": "GET",
+              "url": {
+                "raw": "{{base_url}}/api/v1/todos/user/550e8400-e29b-41d4-a716-446655440000/search?search_term=groceries&limit=10&offset=0",
+                "host": ["{{base_url}}"],
+                "path": ["api", "v1", "todos", "user", "550e8400-e29b-41d4-a716-446655440000", "search"],
+                "query": [
+                  {
+                    "key": "search_term",
+                    "value": "groceries"
+                  },
+                  {
+                    "key": "limit",
+                    "value": "10"
+                  },
+                  {
+                    "key": "offset",
+                    "value": "0"
+                  }
+                ]
+              },
+              "description": "Search todos for a specific user."
+            },
+            "response": [
+              {
+                "name": "Successful Response",
+                "code": 200,
+                "body": "{\n  \"items\": [\n    {\n      \"id\": 1,\n      \"title\": \"Buy groceries\",\n      \"description\": \"Milk, eggs, bread\",\n      \"priority\": 3,\n      \"complete\": false,\n      \"owner_id\": \"550e8400-e29b-41d4-a716-446655440000\",\n      \"created_at\": \"2025-03-16T10:00:00Z\",\n      \"finished_at\": \"2025-03-18T12:00:00Z\"\n    }\n  ],\n  \"page_number\": 0,\n  \"page_size\": 0,\n  \"total_items\": 0,\n  \"total_pages\": 0,\n  \"has_next\": true,\n  \"has_previous\": true\n}"
+              },
+              {
+                "name": "Validation Error",
+                "code": 422,
+                "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        0\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}"
+              }
+            ]
+          },
+          {
+            "name": "Get User Todos",
+            "request": {
+              "method": "GET",
+              "url": {
+                "raw": "{{base_url}}/api/v1/todos/user/550e8400-e29b-41d4-a716-446655440000?limit=10&offset=0",
+                "host": ["{{base_url}}"],
+                "path": ["api", "v1", "todos", "user", "550e8400-e29b-41d4-a716-446655440000"],
+                "query": [
+                  {
+                    "key": "limit",
+                    "value": "10"
+                  },
+                  {
+                    "key": "offset",
+                    "value": "0"
+                  }
+                ]
+              },
+              "description": "Fetch todos for a specific user."
+            },
+            "response": [
+              {
+                "name": "Successful Response",
+                "code": 200,
+                "body": "{\n  \"items\": [\n    {\n      \"id\": 1,\n      \"title\": \"Buy groceries\",\n      \"description\": \"Milk, eggs, bread\",\n      \"priority\": 3,\n      \"complete\": false,\n      \"owner_id\": \"550e8400-e29b-41d4-a716-446655440000\",\n      \"created_at\": \"2025-03-16T10:00:00Z\",\n      \"finished_at\": \"2025-03-18T12:00:00Z\"\n    }\n  ],\n  \"page_number\": 0,\n  \"page_size\": 0,\n  \"total_items\": 0,\n  \"total_pages\": 0,\n  \"has_next\": true,\n  \"has_previous\": true\n}"
+              },
+              {
+                "name": "Validation Error",
+                "code": 422,
+                "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        0\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}"
+              }
+            ]
+          },
+          {
+            "name": "Get Todo",
+            "request": {
+              "method": "GET",
+              "url": {
+                "raw": "{{base_url}}/api/v1/todos/1",
+                "host": ["{{base_url}}"],
+                "path": ["api", "v1", "todos", "1"]
+              },
+              "description": "Fetch a specific todo."
+            },
+            "response": [
+              {
+                "name": "Successful Response",
+                "code": 200,
+                "body": "{\n  \"id\": 1,\n  \"title\": \"Buy groceries\",\n  \"description\": \"Milk, eggs, bread\",\n  \"priority\": 3,\n  \"complete\": false,\n  \"owner_id\": \"550e8400-e29b-41d4-a716-446655440000\",\n  \"created_at\": \"2025-03-16T10:00:00Z\",\n  \"finished_at\": \"2025-03-18T12:00:00Z\"\n}"
+              },
+              {
+                "name": "Validation Error",
+                "code": 422,
+                "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        0\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}"
+              }
+            ]
+          },
+          {
+            "name": "Update Todo",
+            "request": {
+              "method": "PUT",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"title\": \"Buy groceries\",\n  \"description\": \"Milk, eggs, bread\",\n  \"priority\": 3,\n  \"complete\": true\n}"
+              },
+              "url": {
+                "raw": "{{base_url}}/api/v1/todos/1",
+                "host": ["{{base_url}}"],
+                "path": ["api", "v1", "todos", "1"]
+              },
+              "description": "Update a todo."
+            },
+            "response": [
+              {
+                "name": "Successful Response",
+                "code": 200,
+                "body": "{\n  \"id\": 1,\n  \"title\": \"Buy groceries\",\n  \"description\": \"Milk, eggs, bread\",\n  \"priority\": 3,\n  \"complete\": false,\n  \"owner_id\": \"550e8400-e29b-41d4-a716-446655440000\",\n  \"created_at\": \"2025-03-16T10:00:00Z\",\n  \"finished_at\": \"2025-03-18T12:00:00Z\"\n}"
+              },
+              {
+                "name": "Validation Error",
+                "code": 422,
+                "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        0\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}"
+              }
+            ]
+          },
+          {
+            "name": "Delete Todo",
+            "request": {
+              "method": "DELETE",
+              "url": {
+                "raw": "{{base_url}}/api/v1/todos/1",
+                "host": ["{{base_url}}"],
+                "path": ["api", "v1", "todos", "1"]
+              },
+              "description": "Delete a todo."
+            },
+            "response": [
+              {
+                "name": "Successful Response",
+                "code": 204
+              },
+              {
+                "name": "Validation Error",
+                "code": 422,
+                "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        0\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "variable": [
+      {
+        "key": "base_url",
+        "value": "https://todoapp-2ulh.onrender.com"
+      }
+    ]
+  }
